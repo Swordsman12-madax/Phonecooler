@@ -17,3 +17,4 @@ android.orientation = portrait
 android.logcat_filters = *:S python:D
 android.debug = True
 android.use_androidx = True
+ 
