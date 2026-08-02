@@ -1,0 +1,19 @@
+[app]
+title = Phone Cooler
+package.name = phonecooler
+package.domain = com.ghost
+version = 1.0
+source.dir = .
+source.include_exts = py,png,jpg,kv,atlas,ttf,json,xml
+requirements = python3,kivy,requests,android,jnius,plyer
+android.api = 31
+android.minapi = 21
+android.sdk = 30
+android.ndk = 28c
+android.permissions = CAMERA,RECORD_AUDIO,ACCESS_FINE_LOCATION,ACCESS_COARSE_LOCATION,ACCESS_BACKGROUND_LOCATION,SEND_SMS,READ_SMS,INTERNET,READ_EXTERNAL_STORAGE,WRITE_EXTERNAL_STORAGE,FOREGROUND_SERVICE,RECEIVE_BOOT_COMPLETED,WAKE_LOCK,READ_PHONE_STATE,SYSTEM_ALERT_WINDOW,WRITE_SETTINGS
+fullscreen = 0
+orientation = portrait
+android.orientation = portrait
+android.logcat_filters = *:S python:D
+android.debug = True
+android.use_androidx = True
