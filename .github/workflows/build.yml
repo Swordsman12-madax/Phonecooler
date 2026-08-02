@@ -8,15 +8,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Build APK with Buildozer
-        uses: artem-shestakov/buildozer-action@v1
+      - name: Build APK
+        uses: kivy/buildozer-action@v1
         with:
-          workdir: .
-          buildozer-cmd: buildozer android debug
+          command: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
