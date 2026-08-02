@@ -8,66 +8,15 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Install dependencies
-        run: |
-          sudo apt update
-          sudo apt install -y openjdk-17-jdk python3-pip git zip unzip wget
-          pip install buildozer cython
-
-      - name: Set up Android SDK with all licenses accepted
-        run: |
-          # Create SDK directory
-          export ANDROID_SDK_ROOT=$HOME/android-sdk
-          mkdir -p $ANDROID_SDK_ROOT
-          cd $ANDROID_SDK_ROOT
-
-          # Download command line tools
-          wget -q https://dl.google.com/android/repository/commandlinetools-linux-11076708_latest.zip
-          unzip -q commandlinetools-linux-11076708_latest.zip
-          mkdir -p cmdline-tools/latest
-          mv cmdline-tools/* cmdline-tools/latest/
-          rm -rf cmdline-tools/latest/commandlinetools 2>/dev/null || true
-
-          # Set path
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
-
-          # Accept ALL licenses - this is the key fix!
-          yes | sdkmanager --licenses --sdk_root=$ANDROID_SDK_ROOT 2>/dev/null || true
-
-          # Install build-tools, platform-tools, and platform
-          yes | sdkmanager "platform-tools" "platforms;android-31" "build-tools;30.0.3" --sdk_root=$ANDROID_SDK_ROOT 2>/dev/null || true
-
-          # Create symlink for buildozer
-          mkdir -p ~/.buildozer/android/platform/android-sdk
-          ln -sf $ANDROID_SDK_ROOT/* ~/.buildozer/android/platform/android-sdk/ 2>/dev/null || true
-
-          # Set environment variables
-          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROIDSDK=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
-          echo "ANDROIDAPI=31" >> $GITHUB_ENV
-          echo "ANDROIDMINAPI=21" >> $GITHUB_ENV
-
-      - name: Build APK
-        run: |
-          buildozer android debug
-
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
+      - name: Build APK with Buildozer
+        uses: artem-shestakov/buildozer-action@v1
         with:
-          name: PhoneCooler-APK
-          path: bin/*.apk
-      - name: Accept Android licenses
-        run: |
-          yes | sdkmanager --licenses
-
-      - name: Build APK
-        run: |
-          buildozer android debug
+          workdir: .
+          buildozer-cmd: buildozer android debug
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
