@@ -5,17 +5,30 @@ on:
     branches: [ main ]
   workflow_dispatch:
 
+permissions:
+  contents: read
+  actions: write
+  checks: write
+  deployments: write
+  issues: write
+  packages: write
+  pull-requests: write
+  repository-projects: write
+  security-events: write
+  statuses: write
+
 jobs:
   build:
     runs-on: ubuntu-latest
     
     steps:
-    - uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
     
     - name: Install dependencies
       run: |
         sudo apt update
-        sudo apt install -y openjdk-17-jdk python3-pip
+        sudo apt install -y openjdk-17-jdk python3-pip git zip unzip
         pip install buildozer cython
         
     - name: Build APK
@@ -23,7 +36,7 @@ jobs:
         yes | buildozer android debug
         
     - name: Upload APK
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: PhoneCooler-APK
         path: bin/*.apk
